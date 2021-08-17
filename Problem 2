@@ -1,0 +1,76 @@
+package APCSProblems;
+import java.util.Scanner;
+import java.util.Arrays;
+public class Problem2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner reader = new Scanner(System.in);
+		System.out.println("Enter code");
+		String input = reader.nextLine();
+		String[] codeArr = input.split("/");
+		String word = codeArr[codeArr.length-1];
+		int numberX = 0;
+		String finalWord = "";
+		
+		for(int i = 0; i < codeArr.length-1; i++) {
+			String[] code = codeArr[i].split("-");
+			if(code[0].equals("LS")) {
+				numberX = Integer.parseInt(code[1]);
+				char[] charsOfWord = word.toCharArray();
+				for(int j = 0; j < numberX; j++) {
+					charsOfWord[j] = '#';
+				}
+				String changedWord = "";
+				for(int q = 0; q < charsOfWord.length; q++) {
+					changedWord = changedWord + (charsOfWord[q] + "");
+				}
+				String hashTags = changedWord.substring(0,numberX);
+				String letters = changedWord.substring(numberX,changedWord.length());
+				finalWord = letters+hashTags;
+			}
+			else if(code[0].equals("RS")) {
+				numberX = Integer.parseInt(code[1]);
+				char[] charsOfWord = word.toCharArray();
+				for(int j = charsOfWord.length-1; j >charsOfWord.length-numberX; j--) {
+					charsOfWord[j] = '#';
+				}
+				System.out.println(Arrays.toString(charsOfWord));
+				String changedWord = "";
+				for(int q = 0; q < charsOfWord.length; q++) {
+					changedWord = changedWord + (charsOfWord[q]+"");
+				}
+				System.out.println(changedWord);
+				String letters = changedWord.substring(0,changedWord.length()-numberX);
+				String hashTags = changedWord.substring(changedWord.length()-numberX,changedWord.length());
+				finalWord = hashTags+letters;
+			}
+			else if(code[0].equals("LC")) {
+				numberX = Integer.parseInt(code[1]);
+				char[] charsOfWord = word.toCharArray();
+				String changedWord = "";
+				for(int q = 0; q < charsOfWord.length; q++) {
+					changedWord = changedWord + (charsOfWord[q] + "");
+				}
+				String shiftLetters = changedWord.substring(0,numberX);
+				String letters = changedWord.substring(numberX,changedWord.length());
+				finalWord = letters+shiftLetters;
+			}
+			else if(code[0].equals("RC")) {
+				numberX = Integer.parseInt(code[1]);
+				char[] charsOfWord = word.toCharArray();
+				String changedWord = "";
+				for(int q = 0; q < charsOfWord.length; q++) {
+					changedWord = changedWord + (charsOfWord[q]+"");
+				}
+				System.out.println(changedWord);
+				String letters = changedWord.substring(0,changedWord.length()-numberX);
+				String shiftLetters = changedWord.substring(changedWord.length()-numberX,changedWord.length());
+				finalWord = shiftLetters+letters;
+			}
+			word = finalWord;
+		}
+		System.out.println(word);
+	}
+
+}
