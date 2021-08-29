@@ -1,76 +1,185 @@
-package APCSProblems;
 import java.util.Scanner;
-import java.util.Arrays;
 public class Problem2 {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scanner reader = new Scanner(System.in);
-		System.out.println("Enter code");
-		String input = reader.nextLine();
-		String[] codeArr = input.split("/");
-		String word = codeArr[codeArr.length-1];
-		int numberX = 0;
-		String finalWord = "";
-		
-		for(int i = 0; i < codeArr.length-1; i++) {
+  public static void main(String[] args){
+    // Calling Scanner class to take in user input
+    Scanner reader = new Scanner(System.in);
+    // For loop to have five iterations of the code
+    for(int i = 0; i < 5; i++){
+      // User entering the code
+		  System.out.println("Enter code");
+      // Taking in the input
+		  String input = reader.nextLine();
+		  String[] codeArr = input.split("/");
+      // Seperating the word from the rest
+      String word = codeArr[codeArr.length-1];
+      // Calling the method to check the codes and produce an output
+      System.out.println(codeSectionChecker(codeArr, word));
+    }
+    reader.close();
+  }
+  public static String codeSectionChecker(String[] codeArr, String word){
+    String finalWord = "";
+    // For looping running until the amount of codes are finished
+    for(int i = 0; i < codeArr.length-1; i++) {
+      //Extracting code from the full string
 			String[] code = codeArr[i].split("-");
+      // Checking if the the code equals LS. If it does, then goes through code
 			if(code[0].equals("LS")) {
-				numberX = Integer.parseInt(code[1]);
+				int numberX = Integer.parseInt(code[1]);
+        // Converting the string into seperate characters
 				char[] charsOfWord = word.toCharArray();
 				for(int j = 0; j < numberX; j++) {
 					charsOfWord[j] = '#';
 				}
 				String changedWord = "";
+        // Concatenating the section
 				for(int q = 0; q < charsOfWord.length; q++) {
 					changedWord = changedWord + (charsOfWord[q] + "");
 				}
+        // hashTags are part of the string, so seperating it from the rest of the string
 				String hashTags = changedWord.substring(0,numberX);
+        // Getting the rest of the string
 				String letters = changedWord.substring(numberX,changedWord.length());
+        // Concatenating thr two together
 				finalWord = letters+hashTags;
 			}
+			// Checking if code equals "RS" 
 			else if(code[0].equals("RS")) {
-				numberX = Integer.parseInt(code[1]);
+				int numberX = Integer.parseInt(code[1]);
 				char[] charsOfWord = word.toCharArray();
-				for(int j = charsOfWord.length-1; j >charsOfWord.length-numberX; j--) {
+				for(int j = charsOfWord.length-1; j >(charsOfWord.length-1)-numberX; j--) {
 					charsOfWord[j] = '#';
 				}
-				System.out.println(Arrays.toString(charsOfWord));
 				String changedWord = "";
 				for(int q = 0; q < charsOfWord.length; q++) {
 					changedWord = changedWord + (charsOfWord[q]+"");
 				}
-				System.out.println(changedWord);
+        // Taking segemnts of the string and concatenating them to get a final output
 				String letters = changedWord.substring(0,changedWord.length()-numberX);
 				String hashTags = changedWord.substring(changedWord.length()-numberX,changedWord.length());
 				finalWord = hashTags+letters;
 			}
+			// Code to check if code equals LC
 			else if(code[0].equals("LC")) {
-				numberX = Integer.parseInt(code[1]);
+				int numberX = Integer.parseInt(code[1]);
 				char[] charsOfWord = word.toCharArray();
 				String changedWord = "";
 				for(int q = 0; q < charsOfWord.length; q++) {
 					changedWord = changedWord + (charsOfWord[q] + "");
 				}
+        // Concatenating the different string segments
 				String shiftLetters = changedWord.substring(0,numberX);
 				String letters = changedWord.substring(numberX,changedWord.length());
 				finalWord = letters+shiftLetters;
 			}
+			// Code to check if code equals RC
 			else if(code[0].equals("RC")) {
-				numberX = Integer.parseInt(code[1]);
+				int numberX = Integer.parseInt(code[1]);
 				char[] charsOfWord = word.toCharArray();
 				String changedWord = "";
 				for(int q = 0; q < charsOfWord.length; q++) {
 					changedWord = changedWord + (charsOfWord[q]+"");
 				}
-				System.out.println(changedWord);
+        // Concatenating the different string segments
 				String letters = changedWord.substring(0,changedWord.length()-numberX);
 				String shiftLetters = changedWord.substring(changedWord.length()-numberX,changedWord.length());
 				finalWord = shiftLetters+letters;
 			}
+      // Code to check if code equals MC
+			else if(code[0].equals("MC")) {
+			  String codeSection = code[1];
+				String[] codeSectionArr = codeSection.split("");
+        // Extracting the startingposition from the code
+				int startingPosition = Integer.parseInt(codeSectionArr[0]);
+        // Extracting the length from the code
+				int length = Integer.parseInt(codeSectionArr[1]);
+        // Extracting the amount of characters that need to be shifted from the code
+				int characterMove = Integer.parseInt(codeSectionArr[2]);
+        // Extracting the direction from the code
+				String direction = codeSectionArr[3];
+				char[] charsOfWord = word.toCharArray();
+				String changedWord = "";
+				for(int q = 0; q < charsOfWord.length; q++) {
+					changedWord = changedWord + (charsOfWord[q]+"");
+				}
+				String sectionWord = "";
+				for(int x = startingPosition-1; x < (length+startingPosition)-1; x++) {
+					sectionWord = sectionWord + (charsOfWord[x]+"");
+				}
+        // Based on the direction, different code to shift the characters using a switch statement
+			  switch(direction){
+          // For right
+			    case "R":
+			      char[] section = sectionWord.toCharArray();
+			      String sectionWordLetters = "";
+			      for(int x = 0; x < section.length; x++){
+			        sectionWordLetters = sectionWordLetters + section[x];
+			      }
+			      String sectionSub = "";
+            // Extracting the last character of the section in the for loop and getting the rest in a sub string then concatenating it together and reiterate again
+			      for(int y = 0; y < characterMove; y++){
+			        char lastCharacter = sectionWordLetters.charAt(sectionWordLetters.length()-1);
+			        sectionSub = sectionWordLetters.substring(0,characterMove);
+			        sectionWordLetters = (lastCharacter+sectionSub);
+			      }
+			      finalWord = (changedWord.substring(0,startingPosition-1) + sectionWordLetters + changedWord.substring(length+2,changedWord.length()));
+			      break;
+            // for left shift code
+			    case "L":
+			      section = sectionWord.toCharArray();
+			      sectionWordLetters = "";
+			      for(int x = 0; x < section.length; x++){
+			        sectionWordLetters = sectionWordLetters + section[x];
+			      }
+			      sectionSub = "";
+            // Extracting the first character and moving it to the back of the string and then for loop to reiterate it again
+			      for(int y = 0; y < characterMove; y++){
+			        char firstCharacter = sectionWordLetters.charAt(0);
+			        sectionSub = sectionWordLetters.substring(1,sectionWordLetters.length());
+			        sectionWordLetters = sectionSub + firstCharacter;
+			      }
+			      finalWord = (changedWord.substring(0,startingPosition-1) + sectionWordLetters + changedWord.substring(length+2,changedWord.length()-1));
+			      break;
+          //Default statement if it is invalid
+			    default:
+			      System.out.println("INVALID");
+			    }
+			  }
+			// Code to check if code equals "REV"
+			else if(code[0].equals("REV")) {
+				int codeNumber = Integer.parseInt(code[1]);
+        // Extracting the startingPosition
+				int startingPosition = codeNumber %10;
+        // Extracting the length
+				int length = codeNumber/10 %10;
+				char[] charsOfWord = word.toCharArray();
+				String changedWord = "";
+				for(int q = 0; q < charsOfWord.length; q++) {
+					changedWord = changedWord + (charsOfWord[q]+"");
+				}
+
+				String sectionWord = "";
+				for(int x = startingPosition-1; x < (length+startingPosition)-1; x++) {
+					sectionWord = sectionWord + (charsOfWord[x]+"");
+				}
+        // Revering the letters using a for loop
+				char[] section = sectionWord.toCharArray();
+				String reverseLetters = "";
+				for (int w = section.length - 1; w >= 0; w--) {
+					reverseLetters = reverseLetters + (section[w]);
+				}
+        // Concatenating the different sections to produce the final word
+				String firstSection = changedWord.substring(0,startingPosition-1);
+				String endSection = changedWord.substring(startingPosition+length-1);
+				finalWord = firstSection + reverseLetters + endSection;
+			}
+      // Making the word the finalWord when going through a code for loop and reiterating again with the changed Word
 			word = finalWord;
 		}
-		System.out.println(word);
+    // Returing the final changed word from the original
+		return(word);
 	}
-
 }
+		
+			
+			
